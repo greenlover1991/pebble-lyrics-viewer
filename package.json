@@ -1,0 +1,30 @@
+{
+    "author": "greenlover1991@gmail.com",
+    "dependencies": {},
+    "keywords": [],
+    "name": "lyrics-viewer",
+    "pebble": {
+        "displayName": "lyrics-viewer",
+        "enableMultiJS": true,
+        "messageKeys": [
+            "LYRICS"
+        ],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite",
+            "emery"
+        ],
+        "uuid": "121086fc-b0f5-4346-b0ea-ba3c2f4a5116",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "1.0.0"
+}
