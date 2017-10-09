@@ -9,8 +9,10 @@
 #define MAX_TEXT_SIZE 2000
 
 static Window *s_window;
+static TextLayer *s_info_text_layer;
 static TextLayer *s_lyrics_text_layer;
 static ScrollLayer *s_scroll_layer;
+static char s_info_buffer[128];
 
 char *translate_error(AppMessageResult result) {
   switch (result) {
@@ -44,10 +46,27 @@ void set_lyrics(char* lyrics) {
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Message received.");
+    
   Tuple *tuple = dict_find(iter, MESSAGE_KEY_LYRICS);
   if (tuple) {
     set_lyrics(tuple->value->cstring);
+  } else {
+    char *track = dict_find(iter, MESSAGE_KEY_TRACK)->value->cstring;
+    char *artist = dict_find(iter, MESSAGE_KEY_ARTIST)->value->cstring;
+    char *album = dict_find(iter, MESSAGE_KEY_ALBUM)->value->cstring;
+    
+    snprintf(s_info_buffer, sizeof(s_info_buffer), "%s - %s\n%s", track, artist, album);
+    text_layer_set_text(s_info_text_layer, s_info_buffer);
+    
+    DictionaryIterator *outbox;
+    app_message_outbox_begin(&outbox);
+    // Send the app message
+    dict_write_cstring(outbox, MESSAGE_KEY_ARTIST, artist);
+    dict_write_cstring(outbox, MESSAGE_KEY_TRACK, track);
+    dict_write_cstring(outbox, MESSAGE_KEY_ALBUM, album);    
+    app_message_outbox_send();
   }
+  
 }
 
 static void inbox_dropped_handler(AppMessageResult reason, void *context) {
@@ -67,18 +86,21 @@ static void window_load(Window *window) {
   
   // setup scroll layer
   GRect bounds = layer_get_bounds(window_layer);
-  s_scroll_layer = scroll_layer_create(bounds);
+  s_scroll_layer = scroll_layer_create(GRect(0, 32, bounds.size.w, bounds.size.h - 32));
   scroll_layer_set_click_config_onto_window(s_scroll_layer, window);
     
-  // setup text layer
+  // setup lyrics text layer
   GRect max_text_bounds = GRect(0, 0, bounds.size.w, MAX_TEXT_SIZE);
   s_lyrics_text_layer = text_layer_create(max_text_bounds);
   
+  // setup info text layer
+  s_info_text_layer = text_layer_create(GRect(0, 0, bounds.size.w, 30));
+  text_layer_set_text(s_info_text_layer, "Loading track info...");
+  
   // add the layers
+  layer_add_child(window_layer, text_layer_get_layer(s_info_text_layer));
   scroll_layer_add_child(s_scroll_layer, text_layer_get_layer(s_lyrics_text_layer));
   layer_add_child(window_layer, scroll_layer_get_layer(s_scroll_layer));
-  
-  //set_lyrics("loading ----");
   
   // hook up app messaging
   app_message_register_inbox_received(inbox_received_handler);
@@ -93,6 +115,7 @@ static void window_load(Window *window) {
 
 static void window_unload(Window *window) {
   app_message_deregister_callbacks();
+  text_layer_destroy(s_info_text_layer);
   text_layer_destroy(s_lyrics_text_layer);
   scroll_layer_destroy(s_scroll_layer);
 }

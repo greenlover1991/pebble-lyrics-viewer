@@ -14,14 +14,7 @@ Pebble.addEventListener('ready',
 //       + "Suspendisse at ante nec felis facilisis eleifend.";
     
 //     Pebble.sendAppMessage({'LYRICS': lyrics});
-    var artist = "Sia";
-    var title = "Titanium";
-    var url = "https://lyric-api.herokuapp.com/api/find/" 
-      + encodeURIComponent(artist) + "/"
-      + encodeURIComponent(title);
-    get(1, url, function(reqCode, json) {
-      Pebble.sendAppMessage({'LYRICS': json.lyric});
-    });
+    
     
   }
 );
@@ -29,9 +22,14 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log('App message received: ' + JSON.stringify(e));
-    
-    // FIXME when received Android broadcast, GET lyrics
-    // Pebble.sendAppMessage(json);
+    var artist = e.payload.ARTIST;
+    var track = e.payload.TRACK;
+    var url = "https://lyric-api.herokuapp.com/api/find/" 
+      + encodeURIComponent(artist) 
+      + "/" + encodeURIComponent(track);
+    get(1, url, function(reqCode, json) {
+      Pebble.sendAppMessage({'LYRICS': json.lyric});
+    });
   }
 );
 

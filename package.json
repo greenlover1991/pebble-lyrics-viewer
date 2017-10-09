@@ -6,20 +6,19 @@
     "pebble": {
         "displayName": "lyrics-viewer",
         "enableMultiJS": true,
-        "messageKeys": [
-            "LYRICS"
-        ],
+        "messageKeys": {
+            "ALBUM": 3,
+            "ARTIST": 2,
+            "LYRICS": 0,
+            "TRACK": 1
+        },
         "projectType": "native",
         "resources": {
             "media": []
         },
         "sdkVersion": "3",
         "targetPlatforms": [
-            "aplite",
-            "basalt",
-            "chalk",
-            "diorite",
-            "emery"
+            "diorite"
         ],
         "uuid": "121086fc-b0f5-4346-b0ea-ba3c2f4a5116",
         "watchapp": {
