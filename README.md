@@ -15,7 +15,7 @@ Instructions:
 5. Lyrcis should be shown
 
 CREDITS
-* blog.ithasu.org/2016/01/using-llamalabs-automate-as-a-pebble-time-companion-app/ - Write up on the Intent broadcasted by Pebble App
+* http://blog.ithasu.org/2016/01/using-llamalabs-automate-as-a-pebble-time-companion-app/ - Write up on the Intent broadcasted by Pebble App
 * https://github.com/rhnvrm/lyric-api - Web API used to fetch lyrics
 
 TODO:
