@@ -14,6 +14,8 @@ static TextLayer *s_lyrics_text_layer;
 static ScrollLayer *s_scroll_layer;
 static char s_info_buffer[128];
 
+static const int SOME_DATA_KEY = 0;
+
 char *translate_error(AppMessageResult result) {
   switch (result) {
     case APP_MSG_OK: return "APP_MSG_OK";
@@ -46,14 +48,23 @@ void set_lyrics(char* lyrics) {
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Message received.");
-    
-  Tuple *tuple = dict_find(iter, MESSAGE_KEY_LYRICS);
-  if (tuple) {
-    set_lyrics(tuple->value->cstring);
+  Tuple *js_ready_tuple = dict_find(iter, MESSAGE_KEY_JS_READY);
+  Tuple *lyrics_tuple = dict_find(iter, MESSAGE_KEY_LYRICS);
+  Tuple *track_tuple = dict_find(iter, MESSAGE_KEY_TRACK);
+  Tuple *artist_tuple = dict_find(iter, MESSAGE_KEY_ARTIST);
+  Tuple *album_tuple = dict_find(iter, MESSAGE_KEY_ALBUM);
+  
+  if (js_ready_tuple) {
+    DictionaryIterator *outbox;
+    app_message_outbox_begin(&outbox);
+    dict_write_cstring(outbox, MESSAGE_KEY_REQ_CODE, "CURR_PLAYBACK");
+    app_message_outbox_send();
+  } else if (lyrics_tuple) {
+    set_lyrics(lyrics_tuple->value->cstring);
   } else {
-    char *track = dict_find(iter, MESSAGE_KEY_TRACK)->value->cstring;
-    char *artist = dict_find(iter, MESSAGE_KEY_ARTIST)->value->cstring;
-    char *album = dict_find(iter, MESSAGE_KEY_ALBUM)->value->cstring;
+    char *track = track_tuple->value->cstring;
+    char *artist = artist_tuple->value->cstring;
+    char *album = album_tuple->value->cstring;
     
     snprintf(s_info_buffer, sizeof(s_info_buffer), "%s - %s\n%s", track, artist, album);
     text_layer_set_text(s_info_text_layer, s_info_buffer);
@@ -66,7 +77,6 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
     dict_write_cstring(outbox, MESSAGE_KEY_ALBUM, album);    
     app_message_outbox_send();
   }
-  
 }
 
 static void inbox_dropped_handler(AppMessageResult reason, void *context) {

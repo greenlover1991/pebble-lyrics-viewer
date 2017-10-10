@@ -9,7 +9,9 @@
         "messageKeys": {
             "ALBUM": 3,
             "ARTIST": 2,
+            "JS_READY": 4,
             "LYRICS": 0,
+            "REQ_CODE": 5,
             "TRACK": 1
         },
         "projectType": "native",

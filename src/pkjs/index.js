@@ -2,7 +2,7 @@
 Pebble.addEventListener('ready',
   function(e) {
     console.log("PebbleKit JS READY");
-    
+    Pebble.sendAppMessage({'JS_READY': true});
 //     var lyrics = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n"
 //       + "Nam quam tellus, fermentu  m quis vulputate quis, vestibulum interdum sapien.\n"
 //       + "Vestibulum lobortis pellentesque pretium. Quisque ultricies purus e  u orci convallis lacinia.\n"
@@ -22,14 +22,20 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log('App message received: ' + JSON.stringify(e));
-    var artist = e.payload.ARTIST;
-    var track = e.payload.TRACK;
-    var url = "https://lyric-api.herokuapp.com/api/find/" 
-      + encodeURIComponent(artist) 
-      + "/" + encodeURIComponent(track);
-    get(1, url, function(reqCode, json) {
-      Pebble.sendAppMessage({'LYRICS': json.lyric});
-    });
+    if (e.payload.REQ_CODE == "CURR_PLAYBACK") { // request current track info
+      console.log('Got request for track info');
+    } else { // request lyrics
+      var artist = e.payload.ARTIST;
+      var track = e.payload.TRACK;
+      var url = "https://lyric-api.herokuapp.com/api/find/" 
+        + encodeURIComponent(artist) 
+        + "/" + encodeURIComponent(track);
+      console.log(url);
+      get(1, url, function(reqCode, json) {
+        console.log(JSON.stringify(json));
+        Pebble.sendAppMessage({'LYRICS': json.lyric});
+      });  
+    }
   }
 );
 
