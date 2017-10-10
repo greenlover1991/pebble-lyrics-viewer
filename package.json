@@ -1,10 +1,10 @@
 {
-    "author": "greenlover1991@gmail.com",
+    "author": "Steven Go",
     "dependencies": {},
     "keywords": [],
-    "name": "lyrics-viewer",
+    "name": "simple-lyrics-viewer",
     "pebble": {
-        "displayName": "lyrics-viewer",
+        "displayName": "Simple Lyrics Viewer",
         "enableMultiJS": true,
         "messageKeys": {
             "ALBUM": 3,
@@ -20,6 +20,7 @@
         },
         "sdkVersion": "3",
         "targetPlatforms": [
+            "aplite",
             "diorite"
         ],
         "uuid": "121086fc-b0f5-4346-b0ea-ba3c2f4a5116",

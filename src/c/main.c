@@ -4,7 +4,6 @@
 
 #include <pebble.h>
 
-
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 #define MAX_TEXT_SIZE 2000
 
