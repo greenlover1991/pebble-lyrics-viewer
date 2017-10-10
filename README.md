@@ -5,7 +5,7 @@ Simple scrollable lyrics viewer for Pebble
 - retrieves lyrics from an API and displays in a ScrollLayer
 * ANDROID only
 * Requires Automate Flow: - https://llamalab.com/automate/community/flows/16413
-* My First Pebble app
+* My First Pebble app - still in training
 
 Instructions:
 1. Install Automate and download the Automate Flow
@@ -21,3 +21,6 @@ CREDITS
 TODO:
 * auto scrolling based on song length and current
 * add time display on the top bar in watch app
+
+NOTES:
+* sure, I could have just grabbed the JSON from Automate, but where's the fun in that? :)
