@@ -5,10 +5,12 @@ Simple scrollable lyrics viewer for Pebble
 - retrieves lyrics from an API and displays in a ScrollLayer
 * ANDROID only
 * Requires Automate Flow: - https://llamalab.com/automate/community/flows/16413
+* Requires Spotify's "Device Broadcast Status" is enabled
 * My First Pebble app - still in training
 
 Instructions:
 1. Install Automate and download the Automate Flow
+2. Enable in Spotify settings: "Device Broadcast Status"
 2. Start the Flow
 3. Play Spotify song
 4. Launch watch app
