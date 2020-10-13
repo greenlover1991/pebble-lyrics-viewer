@@ -1,4 +1,7 @@
 # pebble-lyrics-viewer
+
+**Pebble watchapp**: https://apps.rebble.io/en_US/application/59dceb380dfc32af61003d5a?query=spotify&section=watchapps
+
 Simple scrollable lyrics viewer for Pebble
 
 - displays current track info (title, artist, album)
